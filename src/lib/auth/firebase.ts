@@ -5,11 +5,10 @@ import {
 	signInWithPopup, 
 	signOut, 
 	onAuthStateChanged,
-	linkWithCredential,
 	linkWithPopup,
-	EmailAuthProvider,
 	type User
 } from 'firebase/auth';
+import { getAnalytics, isSupported } from 'firebase/analytics';
 import { writable } from 'svelte/store';
 
 // Firebase Client Configuration (Populated from env)
@@ -19,12 +18,23 @@ const firebaseConfig = {
 	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "",
 	storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "",
 	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
-	appId: import.meta.env.VITE_FIREBASE_APP_ID || ""
+	appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
+	measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || ""
 };
 
 // Initialize App (Avoid multiple instances during hot-reloads)
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
+
+// Initialize Analytics conditionally on client
+export let analytics: any = null;
+if (typeof window !== 'undefined') {
+	isSupported().then((supported) => {
+		if (supported) {
+			analytics = getAnalytics(app);
+		}
+	});
+}
 
 // Svelte Store for Auth State Tracking
 export const user = writable<User | null>(null);
