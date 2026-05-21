@@ -1,0 +1,27 @@
+# wrangler.toml — Cloudflare Pages configuration for Atlas
+
+name = "atlas"
+compatibility_date = "2026-05-01"
+
+# Pages project settings
+[site]
+bucket = ".svelte-kit/cloudflare"
+
+# D1 Database Bindings
+[[d1_databases]]
+binding = "DB"
+database_name = "atlas-db"
+database_id = "00000000-0000-0000-0000-000000000000" # Replace with actual D1 Database UUID
+
+# KV Namespace Bindings
+[[kv_namespaces]]
+binding = "KV"
+id = "00000000-0000-0000-0000-000000000000" # Replace with actual KV Namespace ID
+
+# Workers AI Binding
+[ai]
+binding = "AI"
+
+# Cron triggers for background RSS aggregation
+[triggers]
+crons = ["0 * * * *"] # Refresh feeds every hour
