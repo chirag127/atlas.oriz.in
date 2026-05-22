@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════
+   Atlas — Dark Observatory Design System
+   Playfair Display + Newsreader + JetBrains Mono
+   Deep indigo-black, emerald + amber accents
+   ═══════════════════════════════════════════════ */
+
+@theme {
+  /* Dark Mode (default) */
+  --color-atlas-bg-primary: hsl(220, 22%, 4%);
+  --color-atlas-bg-secondary: hsl(220, 20%, 8%);
+  --color-atlas-bg-tertiary: hsl(220, 18%, 12%);
+  --color-atlas-bg-elevated: hsl(220, 16%, 15%);
+  --color-atlas-border: hsl(220, 16%, 18%);
+  --color-atlas-border-subtle: hsl(220, 14%, 14%);
+  --color-atlas-text-primary: hsl(210, 20%, 92%);
+  --color-atlas-text-secondary: hsl(210, 14%, 62%);
+  --color-atlas-text-muted: hsl(210, 10%, 42%);
+  --color-atlas-accent-emerald: hsl(165, 80%, 45%);
+  --color-atlas-accent-emerald-dim: hsl(165, 60%, 30%);
+  --color-atlas-accent-amber: hsl(35, 95%, 55%);
+  --color-atlas-accent-amber-dim: hsl(35, 70%, 35%);
+  --color-atlas-accent-sky: hsl(200, 80%, 55%);
+  --color-atlas-accent-sky-dim: hsl(200, 60%, 35%);
+  --color-atlas-accent-rose: hsl(340, 80%, 55%);
+  --color-atlas-accent-violet: hsl(260, 70%, 60%);
+  --color-atlas-highlight-yellow: hsl(48, 95%, 55%);
+  --color-atlas-highlight-green: hsl(150, 80%, 45%);
+  --color-atlas-highlight-blue: hsl(210, 85%, 55%);
+  --color-atlas-highlight-pink: hsl(330, 80%, 60%);
+
+  /* Typography */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  --font-ui: "DM Sans", system-ui, -apple-system, sans-serif;
+
+  /* Spacing */
+  --spacing-grid: 4px;
+
+  /* Border Radius */
+  --radius-card: 8px;
+  --radius-modal: 12px;
+  --radius-pill: 20px;
+  --radius-button: 6px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px hsla(220, 22%, 4%, 0.5), 0 1px 2px hsla(220, 22%, 4%, 0.3);
+  --shadow-modal: 0 10px 25px hsla(220, 22%, 4%, 0.7), 0 4px 10px hsla(220, 22%, 4%, 0.4);
+  --shadow-glow-emerald: 0 0 20px hsla(165, 80%, 45%, 0.15);
+  --shadow-glow-amber: 0 0 20px hsla(35, 95%, 55%, 0.15);
+
+  /* Animation */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-micro: 150ms;
+  --duration-nav: 250ms;
+  --duration-modal: 400ms;
+  --duration-page: 200ms;
+}
+
+/* ── Base Styles */
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-atlas-bg-primary);
+  color: var(--color-atlas-text-primary);
+  line-height: 1.6;
+}
+
+/* ── Typography Utilities */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-ui {
+  font-family: var(--font-ui);
+}
+
+/* ── Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-atlas-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-atlas-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-atlas-text-muted);
+}
+
+/* ── Selection */
+::selection {
+  background-color: hsla(165, 80%, 45%, 0.25);
+  color: var(--color-atlas-text-primary);
+}
+
+/* ── Focus */
+:focus-visible {
+  outline: 2px solid var(--color-atlas-accent-emerald);
+  outline-offset: 2px;
+}
+
+/* ── Link defaults */
+a {
+  color: var(--color-atlas-accent-sky);
+  text-decoration: none;
+  transition: color var(--duration-micro) ease-out;
+}
+
+a:hover {
+  color: var(--color-atlas-accent-emerald);
+}
+
+/* ── Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-atlas-bg-secondary) 25%,
+    var(--color-atlas-bg-tertiary) 50%,
+    var(--color-atlas-bg-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-card);
+}
+
+/* ── Glass effect */
+.glass {
+  background: hsla(220, 20%, 8%, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-atlas-border-subtle);
+}
+
+/* ── Article reader typography */
+.article-content {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--color-atlas-text-primary);
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  color: var(--color-atlas-text-primary);
+}
+
+.article-content h1 { font-size: 2rem; }
+.article-content h2 { font-size: 1.5rem; }
+.article-content h3 { font-size: 1.25rem; }
+
+.article-content p {
+  margin-bottom: 1.25em;
+}
+
+.article-content blockquote {
+  border-left: 3px solid var(--color-atlas-accent-emerald);
+  padding-left: 1.25em;
+  margin: 1.5em 0;
+  color: var(--color-atlas-text-secondary);
+  font-style: italic;
+}
+
+.article-content code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-atlas-bg-tertiary);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+.article-content pre {
+  background: var(--color-atlas-bg-secondary);
+  border: 1px solid var(--color-atlas-border);
+  border-radius: var(--radius-card);
+  padding: 1.25em;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+
+.article-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.article-content img {
+  max-width: 100%;
+  border-radius: var(--radius-card);
+  margin: 1.5em 0;
+}
+
+.article-content a {
+  color: var(--color-atlas-accent-sky);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-content ul,
+.article-content ol {
+  margin: 1em 0;
+  padding-left: 1.5em;
+}
+
+.article-content li {
+  margin-bottom: 0.5em;
+}
+
+/* ── Light mode override */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-atlas-bg-primary: hsl(40, 20%, 97%);
+    --color-atlas-bg-secondary: hsl(40, 15%, 94%);
+    --color-atlas-bg-tertiary: hsl(40, 12%, 90%);
+    --color-atlas-bg-elevated: hsl(40, 10%, 87%);
+    --color-atlas-border: hsl(40, 12%, 82%);
+    --color-atlas-border-subtle: hsl(40, 10%, 88%);
+    --color-atlas-text-primary: hsl(220, 25%, 10%);
+    --color-atlas-text-secondary: hsl(220, 15%, 35%);
+    --color-atlas-text-muted: hsl(220, 10%, 55%);
+  }
+}

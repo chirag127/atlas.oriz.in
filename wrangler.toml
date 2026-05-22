@@ -1,27 +1,19 @@
-# wrangler.toml — Cloudflare Pages configuration for Atlas
-
 name = "atlas"
-compatibility_date = "2026-05-01"
+main = ".open-next/worker.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
 
-# Pages project settings
-[site]
-bucket = ".svelte-kit/cloudflare"
+# Cloudflare Pages deployment config
+pages_build_output_dir = ".vercel/output/static"
 
-# D1 Database Bindings
-[[d1_databases]]
-binding = "DB"
-database_name = "atlas-db"
-database_id = "00000000-0000-0000-0000-000000000000" # Replace with actual D1 Database UUID
+# Environment variables set in Cloudflare Dashboard:
+# DATABASE_URL, SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY
+# NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+# RESEND_API_KEY, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY
+# CRON_SECRET, OPENAI_API_KEY, ANTHROPIC_API_KEY
 
-# KV Namespace Bindings
-[[kv_namespaces]]
-binding = "KV"
-id = "00000000-0000-0000-0000-000000000000" # Replace with actual KV Namespace ID
+[env.production]
+vars = { NODE_ENV = "production" }
 
-# Workers AI Binding
-[ai]
-binding = "AI"
-
-# Cron triggers for background RSS aggregation
-[triggers]
-crons = ["0 * * * *"] # Refresh feeds every hour
+[env.preview]
+vars = { NODE_ENV = "production" }

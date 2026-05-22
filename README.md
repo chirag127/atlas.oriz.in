@@ -1,103 +1,181 @@
-# Atlas (KnowledgeOS)
+# Atlas
 
-> **Domain**: `atlas.oriz.in` | **Repository**: `chirag127/atlas.oriz.in`
+> Your personal intelligence feed — everything the web knows, ranked for you
 
-Atlas (formerly KnowledgeOS) is a mobile-first, offline-ready Progressive Web App (PWA) designed for high-signal technical, financial, productivity, and emerging tech knowledge curation. 
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)](https://www.typescriptlang.org)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-38bdf8)](https://tailwindcss.com)
+[![Supabase](https://img.shields.io/badge/Supabase-Free-3fcf8e)](https://supabase.com)
+[![pnpm](https://img.shields.io/badge/pnpm-10-f9ad00)](https://pnpm.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-Built using **Svelte 5 (Runes)** and **SvelteKit**, styled with **Tailwind CSS v4** using custom Brutalist dark OLED aesthetics, and managed using **PNPM**. It integrates a client-side **Bring-Your-Own-Key (BYOK)** Completions Router supporting **13 distinct free/trial AI providers** alongside browser-local/remote vector embeddings.
+Atlas is a **Google Discover replacement for power users** — a mobile-first PWA that aggregates every corner of the web (RSS, Reddit, Hacker News, GitHub, YouTube, AI news, finance, cybersecurity, privacy) and surfaces the most relevant content using a recommendation engine that learns from every interaction.
 
----
+## Key Highlights
 
-## 🚀 Quick Start
+- **Works without login** — full feed accessible as guest
+- **13+ AI providers** — Puter.js (zero-config), Gemini, Groq, OpenRouter, Cerebras, NVIDIA, Mistral, Cohere, HuggingFace, GitHub Models, Cloudflare AI
+- **45+ RSS feeds** pre-seeded across 10 categories
+- **Web discovery** — DuckDuckGo search integration (no API key needed)
+- **Dark Observatory** design — Playfair Display + Newsreader typography, deep indigo-black backgrounds
+- **Offline-first PWA** — Serwist service worker, IndexedDB cache
+- **Knowledge management** — bookmarks, highlights, notes, collections, spaced repetition (FSRS)
+- **Gamification** — reading streaks, curiosity scores, knowledge graph visualization
+- **Full cloud sync** — Supabase Postgres + pgvector for semantic search
 
-### 1. Prerequisites
-Ensure you have [Node.js](https://nodejs.org/) (v20+) and [PNPM](https://pnpm.io/) (v10+) installed.
+## Tech Stack
 
-### 2. Installation
-Clone the repository and install dependencies:
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 15 (App Router, TypeScript strict) |
+| Styling | TailwindCSS v4 (CSS-first `@theme` config) |
+| Database | Supabase (Postgres + pgvector + Auth + Storage) |
+| ORM | Drizzle ORM |
+| AI Primary | Puter.js (client-side, zero-config, 400+ models) |
+| AI Fallbacks | Gemini, Groq, Cerebras, OpenRouter, NVIDIA, Mistral, Cohere, HuggingFace, GitHub Models, Cloudflare AI |
+| PWA | Serwist (`@serwist/next`) |
+| State | Zustand + TanStack Query |
+| Search | Postgres tsvector + Orama (client-side FTS) |
+| Vectors | Transformers.js (local) + Supabase pgvector |
+| Spaced Rep | ts-fsrs (FSRS algorithm) |
+| Hosting | Vercel (primary) / Cloudflare Workers (backup) |
+| Package Mgr | pnpm (mandatory) |
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 22+
+- pnpm 10+ (`npm install -g pnpm`)
+
+### Installation
+
 ```bash
 git clone https://github.com/chirag127/atlas.oriz.in.git
 cd atlas.oriz.in
 pnpm install
 ```
 
-### 3. Environment Setup
-Copy `.env.example` to `.env` and configure your Firebase Web Client keys:
+### Environment Variables
+
 ```bash
-cp .env.example .env
+cp .env.example .env.local
 ```
 
-### 4. Database Setup
-Atlas uses Cloudflare D1 for server-side persistence and Dexie.js for client-side IndexedDB.
-Run local D1 migrations:
+**Atlas works with zero configuration.** The following features work without any API keys:
+
+- Puter.js AI (client-side, uses user's Puter account)
+- DuckDuckGo discovery (no key needed)
+- Demo articles (when no database configured)
+
+For full functionality, configure:
+
+| Variable | Required | Get From |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Optional | [supabase.com/dashboard](https://supabase.com/dashboard) |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Optional | Supabase → Settings → API |
+| `DATABASE_URL` | Optional | Supabase → Settings → Database |
+| `GEMINI_API_KEY` | Optional | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| `GROQ_API_KEY` | Optional | [console.groq.com/keys](https://console.groq.com/keys) |
+| `OPENROUTER_API_KEY` | Optional | [openrouter.ai/keys](https://openrouter.ai/keys) |
+| `CEREBRAS_API_KEY` | Optional | [cloud.cerebras.ai](https://cloud.cerebras.ai) |
+| `RESEND_API_KEY` | Optional | [resend.com/api-keys](https://resend.com/api-keys) |
+
+### Development
+
 ```bash
-pnpm exec wrangler d1 migrations apply DB --local
+pnpm dev
 ```
 
-### 5. Running Locally
-Start the Vite development server:
+Open [http://localhost:3000](http://localhost:3000)
+
+### Database Setup (Optional)
+
 ```bash
-pnpm run dev
+# Push schema to Supabase
+pnpm db:push
+
+# Seed default feeds
+pnpm db:seed
+
+# Open Drizzle Studio
+pnpm db:studio
 ```
-Open `http://localhost:5173` on your desktop or mobile browser.
 
----
+## Features
 
-## 🛠️ Tech Stack
+### Feed & Discovery
+- 45+ pre-seeded RSS feeds across 10 categories
+- Web discovery via DuckDuckGo (free, no key)
+- Optional paid discovery: Serper, Tavily, Brave Search, Exa
+- Personalized recommendation engine with interest learning
+- Anti-clickbait scoring
+- India content boost
 
-- **Framework**: SvelteKit & Svelte 5 (utilizing reactive Runes: `$state`, `$derived`, `$effect`)
-- **Styling**: Tailwind CSS v4 + custom Brutalist design system optimized for mobile OLED screens
-- **Package Manager**: PNPM
-- **Client DB**: Dexie.js (IndexedDB wrapper) with offline transaction queueing
-- **Server DB**: Cloudflare D1 (SQLite database)
-- **Deployment & Hosting**: Cloudflare Pages (Serverless Functions adapter)
-- **Authentication**: Firebase Authentication (Email/Password & Google Login)
-- **Rich Text Editor**: `@milkdown/crepe` WYSIWYG editor
-- **Spaced Repetition**: `ts-fsrs` (Free Spaced Repetition Scheduler algorithm)
+### AI Features
+- **Puter.js** — zero-config, client-side, 400+ models
+- **11 server-side providers** with automatic fallback chain
+- Per-task model selection (summarize, chat, tags, digest, embed)
+- TL;DR, full summary, key insights, ELI5, article chat
+- Live model discovery with "Refresh models" button
+- AES-256-GCM encryption for stored API keys
 
----
+### Knowledge Management
+- Bookmarks with FSRS spaced repetition
+- Highlights with 4 color options
+- Standalone and article-attached notes
+- Collections (manual + AI-powered smart folders)
+- Tags (user-defined + AI-generated)
+- Knowledge graph visualization
+- Export: Markdown, Obsidian vault, JSON backup
 
-## 🧠 AI Bring-Your-Own-Key (BYOK) Providers
+### PWA & Offline
+- Serwist service worker
+- Offline article reading
+- Background sync for pending actions
+- Push notifications (VAPID)
+- Add to Home Screen support
 
-Atlas shifts all AI inference costs to the user. All keys are encrypted/stored strictly in browser LocalStorage. 
+### Gamification
+- Reading streak tracking
+- Curiosity score (topic breadth)
+- Learning score (weighted activity)
+- Knowledge graph connections
+- Weekly recap email
 
-The Completions Router and Embeddings module support:
+## Deploy to Vercel
 
-1. **Puter.js**: Browser-direct popup authentication (No key needed). Uses the biggest free model ending in `:free`.
-2. **OpenRouter**: Free models routing via `openrouter/free`.
-3. **Google AI Studio**: Free rate-limited Gemini 1.5/2.0 Flash models.
-4. **NVIDIA NIM**: 1000 free trial credits for rotating model catalogs.
-5. **Mistral AI Platform**: Free developer tier.
-6. **Mistral Codestral**: Dedicated free developer keys for coding models.
-7. **HuggingFace Inference**: Free serverless inference API tokens.
-8. **Vercel AI Gateway**: Cache & observe routes wrapper.
-9. **OpenCode Zen**: Free token-based coding assistant models.
-10. **Cerebras**: Ultra-fast Llama 3.1 inference.
-11. **Groq**: Free rate-limited developer sandbox models.
-12. **Cohere**: Free trial developer keys (Command models).
-13. **Cloudflare Workers AI**: Free daily Workers AI token allowances.
+1. Push to GitHub
+2. Import in [vercel.com](https://vercel.com)
+3. Add environment variables
+4. Deploy
 
----
+Vercel auto-detects Next.js and deploys with zero config.
 
-## 🔄 Bidirectional Sync & Offline-First
+## Deploy to Cloudflare Workers
 
-1. **Offline Queue**: Edits (notes, collections, reviews, cards) are written locally to IndexedDB immediately.
-2. **Synchronization**: When internet connection is active, a bidirectional reconciliation endpoint (`/api/sync`) pushes local actions and pulls cloud updates using Last-Write-Wins (LWW) resolution.
-3. **Service Workers**: Aggregated blogs, notes, and reviews are cached locally for full offline reading support.
+```bash
+pnpm add -D @opennextjs/cloudflare
+# Configure open-next.config.ts
+pnpm build
+npx wrangler deploy
+```
 
----
+## Architecture
 
-## 📈 Verification & CI/CD
+```
+atlas.oriz.in/
+├── src/
+│   ├── app/           # Next.js App Router pages + API routes
+│   ├── components/    # React components (ui, feed, reader, ai, etc.)
+│   ├── lib/           # Core libraries (db, ai, feeds, discovery, etc.)
+│   ├── hooks/         # React hooks
+│   ├── stores/        # Zustand stores
+│   └── middleware.ts  # Auth guard
+├── public/            # Static assets, fonts, service worker
+└── tests/             # Unit, integration, e2e tests
+```
 
-All code validations run via GitHub Actions.
-- **Type Check**: `pnpm run check` (Runs `svelte-check` compiler diagnostics)
-- **Lint Check**: `pnpm run lint`
-- **Build Output**: `pnpm run build`
+## License
 
-The repository workflow (`.github/workflows/deploy.yml`) is configured with `continue-on-error: true` for all validation steps so that check outcomes are fully visible to developers.
-
----
-
-## 🛡️ License
-
-Open source and free for personal optimization.
+[MIT](LICENSE) — Chirag Singhal
